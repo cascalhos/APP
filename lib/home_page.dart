@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'app_styles.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
   @override
@@ -13,105 +15,132 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<List<dynamic>> fetchData() async {
-    final response = await http.get(Uri.parse('https://seu-endpoint-aqui'));
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-      // return jsonDecode(jsonData);
-    } else {
-      throw Exception('Falha ao carregar os dados do backend');
-    }
+    // final response = await http.get(Uri.parse('https://seu-endpoint-aqui'));
+    // if (response.statusCode == 200) {
+    //   return jsonDecode(response.body);
+    // } else {
+    //   throw Exception('Falha ao carregar os dados do backend');
+    // }
+    return jsonDecode(jsonData);
   }
 
-  _carrossel(List<dynamic> procedimentos) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 30,
-          ),
-          SizedBox(
-            height: 170,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: photos.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    setState(() {
-                      selectedPhotoIndex = index;
-                    });
+  Widget _carrossel(List<dynamic> procedimentos) {
+    return Column(children: [
+      Expanded(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              SizedBox(
+                height: 170,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: photos.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        setState(() {
+                          selectedPhotoIndex = index;
+                        });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Column(children: [
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundImage: AssetImage(photos[index]),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(description[index]),
+                          if (index == selectedPhotoIndex)
+                            CircleAvatar(
+                                radius: 4,
+                                backgroundColor:
+                                    Color.fromRGBO(188, 156, 116, 1.0)),
+                        ]),
+                      ),
+                    );
                   },
-                  child: Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Column(children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage: AssetImage(photos[index]),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(description[index]),
-                      if (index == selectedPhotoIndex)
-                        CircleAvatar(
-                            radius: 4,
-                            backgroundColor:
-                                Color.fromRGBO(188, 156, 116, 1.0)),
-                    ]),
-                  ),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-                top: 5.0, bottom: 8.0, left: 20, right: 20),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    procedimentos[selectedPhotoIndex]['nomeProcedimento'],
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 24),
-                  ),
                 ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 5.0, bottom: 8.0, left: 20, right: 20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        procedimentos[selectedPhotoIndex]['nomeProcedimento'],
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount:
+                      procedimentos[selectedPhotoIndex]['sessoes'].length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                          top: 8.0, bottom: 8.0, left: 20, right: 20),
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                                radius: 4,
+                                backgroundColor:
+                                    Color.fromRGBO(188, 156, 116, 1.0)),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Expanded(
+                                child: Text(procedimentos[selectedPhotoIndex]
+                                    ['sessoes'][index]['nome'])),
+                            Text(
+                              'R\$' +
+                                  procedimentos[selectedPhotoIndex]['sessoes']
+                                          [index]['valor']
+                                      .toString() +
+                                  ' a sessão',
+                              textAlign: TextAlign.right,
+                            )
+                          ]),
+                    );
+                  }),
+            ],
           ),
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: procedimentos[selectedPhotoIndex]['sessoes'].length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(
-                      top: 8.0, bottom: 8.0, left: 20, right: 20),
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                            radius: 4,
-                            backgroundColor:
-                                Color.fromRGBO(188, 156, 116, 1.0)),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(
-                            child: Text(procedimentos[selectedPhotoIndex]
-                                ['sessoes'][index]['nome'])),
-                        Text(
-                          'R\$' +
-                              procedimentos[selectedPhotoIndex]['sessoes']
-                                      [index]['valor']
-                                  .toString() +
-                              ' a sessão',
-                          textAlign: TextAlign.right,
-                        )
-                      ]),
-                );
-              })
-        ],
+        ),
       ),
-    );
+      Align(
+        alignment: Alignment.bottomRight,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: ElevatedButton(
+              style: AppStyles.instance.buttonStyle(),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/schedules',
+                    arguments: procedimentos[selectedPhotoIndex]);
+              },
+              child: Container(
+                  width: 80,
+                  height: 40,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Agendar',
+                      textAlign: TextAlign.center,
+                    ),
+                  ))),
+        ),
+      ),
+    ]);
   }
 
   List<String> photos = [
@@ -167,13 +196,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     ]
   ''';
-
-  // List<dynamic> procedimentos = [];
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   procedimentos = jsonDecode(jsonData);
-  // }
 
   @override
   Widget build(BuildContext context) {

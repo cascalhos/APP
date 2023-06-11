@@ -1,6 +1,7 @@
 ﻿import 'package:agendamento/contact_page.dart';
 import 'package:agendamento/login_page.dart';
 import 'package:agendamento/my_data_page.dart';
+import 'package:agendamento/schedule_page.dart';
 import 'package:agendamento/sessions_page.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/sessions': (context) => SessionsPage(),
         '/datas': (context) => MyDataPage(),
         '/contacts': (context) => ContactPage(),
+        '/schedules': (context) => SchedulePage(),
       },
     );
   }

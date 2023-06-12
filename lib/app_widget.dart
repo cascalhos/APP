@@ -15,23 +15,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Larissa Pontes Estética',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 188, 156, 116)),
-          useMaterial3: true,
-          appBarTheme: const AppBarTheme(
-              backgroundColor: Color.fromARGB(255, 188, 156, 116),
-              titleTextStyle: TextStyle(color: Colors.white)),
-        ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => LoginPage(),
-          '/home': (context) => MyHomePage(),
-          '/sessions': (context) => SessionsPage(),
-          '/datas': (context) => MyDataPage(),
-          '/contacts': (context) => ContactPage(),
-          '/schedules': (context) => SchedulePage(),
-        });
+      title: 'Larissa Pontes Estética',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 188, 156, 116)),
+        useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+            backgroundColor: Color.fromARGB(255, 188, 156, 116),
+            titleTextStyle: TextStyle(color: Colors.white)),
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => LoginPage(),
+        '/home': (context) => MyHomePage(),
+        '/sessions': (context) => SessionsPage(),
+        '/datas': (context) => MyDataPage(),
+        '/contacts': (context) => ContactPage(),
+        '/schedules': (context) => SchedulePage(),
+      },
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('pt', 'BR'),
+      ],
+    );
   }
 }
